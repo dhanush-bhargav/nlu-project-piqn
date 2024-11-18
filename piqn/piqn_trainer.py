@@ -53,7 +53,7 @@ class PIQNTrainer(BaseTrainer):
     def __init__(self, args: argparse.Namespace):
         super().__init__(args)
         self._tokenizer = AutoTokenizer.from_pretrained(args.tokenizer_path,
-                                                    local_files_only = True,
+                                                    local_files_only = False,
                                                     use_fast = False,
                                                     do_lower_case=args.lowercase,
                                                     cache_dir=args.cache_path)

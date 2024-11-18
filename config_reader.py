@@ -12,13 +12,13 @@ pynvml.nvmlInit()
 
 def process_configs(target, arg_parser):
     args, _ = arg_parser.parse_known_args()
-    ctx = mp.get_context('fork')
+    ctx = mp.get_context('spawn')
 
     subprocess=[]
     if "ALL_GPU" in os.environ:
         all_gpu_queue = list(map(int, os.environ["ALL_GPU"].split(",")))
     else:
-        all_gpu_queue = [0, 1, 2, 3, 4, 5, 6, 7]
+        all_gpu_queue = [0]
     gpu_queue = []
     waittime = 240
     gpu_just_used = []
@@ -61,6 +61,7 @@ def process_configs(target, arg_parser):
                     
                 except Exception as e:
                     pass
+            gpu_queue = all_gpu_queue
             print(gpu_queue)
             if len(gpu_queue)<run_args.world_size:
                 print(f"Need {run_args.world_size} GPUs for DDP Training, but only {len(gpu_queue)} free devices: {gpu_queue}. Waiting for Free GPU ......")

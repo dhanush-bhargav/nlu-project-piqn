@@ -4,6 +4,7 @@ import json
 import os
 import warnings
 from typing import List, Tuple, Dict
+import torch
 
 from sklearn.metrics import precision_recall_fscore_support as prfs
 from transformers import BertTokenizer
