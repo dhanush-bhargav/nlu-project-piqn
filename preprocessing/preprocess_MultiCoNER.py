@@ -44,9 +44,9 @@ CONVERSION_DICT = {
 # POS Tagger
 def pos_tag_tokens(tokens, pos_tagger):
 
-    sentence = Sentence(tokens)
-    pos_tagger.predict(sentence)
-    pos_tags = [token.get_label("upos").value for token in sentence]
+    # sentence = Sentence(tokens)
+    # pos_tagger.predict(sentence)
+    pos_tags = ["NOUN" for token in tokens]
 
     return pos_tags
 
