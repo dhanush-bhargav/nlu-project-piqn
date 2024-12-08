@@ -113,9 +113,9 @@ if __name__ == "__main__":
     split = args.split
     save_dir = args.save_dir
 
-    pos_tagger = SequenceTagger.load("flair/upos-multi")
+    # pos_tagger = SequenceTagger.load("flair/upos-multi")
     dataset = load_dataset("MultiCoNER/multiconer_v2", language)
-    converted_json = [convert_tokens(example, pos_tagger) for example in dataset[split]]
+    converted_json = [convert_tokens(example, None) for example in dataset[split]]
 
     with open(save_dir + os.path.sep + f"MultiCoNER_{language.split()[0]}_{split}.json", "w") as f:
         json.dump(converted_json, f)
