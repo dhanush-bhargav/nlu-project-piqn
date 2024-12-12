@@ -1,6 +1,4 @@
 import argparse
-from flair.models import SequenceTagger
-from flair.data import Sentence
 from datasets import load_dataset
 import json
 import os
@@ -42,22 +40,18 @@ CONVERSION_DICT = {
 }
 
 # POS Tagger
-def pos_tag_tokens(tokens, pos_tagger):
-
-    # sentence = Sentence(tokens)
-    # pos_tagger.predict(sentence)
+def pos_tag_tokens(tokens):
     pos_tags = ["NOUN" for token in tokens]
 
     return pos_tags
 
 
-def convert_tokens(sample, pos_tagger):
+def convert_tokens(sample):
     """
     Creates a dictionary that maps tokens to their corresponding POS tags.
 
     Args:
         sample : A data sample containing tokens, NER tags and id
-        pos_tagger : An instance of flair.SequenceTagger
 
     Returns:
         converted_dict: a dictionary that maps the MultiCoNER sample to a PIQN sample.
@@ -68,7 +62,7 @@ def convert_tokens(sample, pos_tagger):
         "entities": extract_entities(sample['ner_tags']),
         "org_id": sample["id"],
         "relations": {},
-        "pos": pos_tag_tokens(sample['tokens'], pos_tagger),
+        "pos": pos_tag_tokens(sample['tokens']),
         "ltokens": [],
         "rtokens": [],
     }
@@ -113,9 +107,8 @@ if __name__ == "__main__":
     split = args.split
     save_dir = args.save_dir
 
-    # pos_tagger = SequenceTagger.load("flair/upos-multi")
     dataset = load_dataset("MultiCoNER/multiconer_v2", language)
-    converted_json = [convert_tokens(example, None) for example in dataset[split]]
+    converted_json = [convert_tokens(example) for example in dataset[split]]
 
     with open(save_dir + os.path.sep + f"MultiCoNER_{language.split()[0]}_{split}.json", "w") as f:
         json.dump(converted_json, f)
